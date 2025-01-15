@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./initData:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: nestjs-phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 300M
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+
+  web:
+    image: node:16
+    restart: always
+    command: npm run start:dev
+    working_dir: /mnt
+    volumes:
+      - ../:/mnt
+    depends_on:
+      - mysql
+    ports:
+      - "127.0.0.1:${APP_PORT}:3001"
