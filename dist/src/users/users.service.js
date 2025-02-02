@@ -33,6 +33,9 @@ let UsersService = class UsersService {
     findOne(id) {
         return this.usersRepository.findOneBy({ id });
     }
+    findByUsername(username) {
+        return this.usersRepository.findOneBy({ name: username });
+    }
     async remove(id) {
         await this.usersRepository.delete(id);
     }

@@ -9,5 +9,6 @@ export declare class UsersService {
     update(id: number, updateUserDto: UpdateUserDto): Promise<import("typeorm").UpdateResult>;
     findAll(): Promise<User[]>;
     findOne(id: number): Promise<User | null>;
+    findByUsername(username: string): Promise<User | null>;
     remove(id: number): Promise<void>;
 }
